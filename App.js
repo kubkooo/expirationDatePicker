@@ -1,20 +1,14 @@
 import moment from 'moment';
-import { ColorSet } from './assets/colorSet';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import ExpirationDatePicker from './components/ExpirationDatePicker';
+import { ColorSet } from './assets/colorSet';
 import { useState } from 'react';
-import {
-  StyleSheet,
-  FlatList,
-  Text,
-  View,
-  Platform,
-  Pressable,
-} from 'react-native';
+import { StyleSheet, Text, View, Platform, Pressable } from 'react-native';
 
-
+const numColumns = 5;
+const datesCount = 29;
 const today = undefined;
 const currentMonth = moment(today).month();
-const datesCount = 29;
 
 export default function App() {
   const [dates, setDates] = useState(getInitialDates());
@@ -99,24 +93,10 @@ export default function App() {
           <Text style={styles.Item}>Item: Fresh Milk 1L</Text>
           <Text style={styles.Barcode}>[ 316543154983125 ]</Text>
           <View style={styles.MainContainer}>
-            <FlatList
-              data={dates}
-              renderItem={({ item }) => {
-                return (
-                  <View
-                    style={[
-                      styles.GridViewBlockStyle,
-                      { backgroundColor: item?.style?.backgroundColor },
-                    ]}>
-                    <Text
-                      style={styles.GridViewInsideTextItemStyle}
-                      onPress={() => GetGridViewItem(item)}>
-                      {item.label}
-                    </Text>
-                  </View>
-                );
-              }}
-              numColumns={5}
+            <ExpirationDatePicker
+              dates={dates}
+              numColumns={numColumns}
+              callbackFunction={GetGridViewItem}
             />
           </View>
         </View>
