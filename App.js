@@ -11,6 +11,9 @@ import {
   Pressable,
 } from 'react-native';
 
+
+const today = undefined;
+const currentMonth = moment(today).month();
 const datesCount = 29;
 
 export default function App() {
@@ -20,15 +23,19 @@ export default function App() {
 
   function getInitialDates() {
     return getDates(
-      undefined,
+      today,
       datesCount - 1,
       { label: '...', date: null, style: styles.LastItem },
-      { label: 'Del', date: moment().subtract(1, 'days'), style: styles.DeleteItem }
+      {
+        label: 'Del',
+        date: moment(today).subtract(1, 'days'),
+        style: styles.DeleteItem,
+      }
     );
   }
 
   function getMonthColor(date) {
-    return (date.month() - moment().month()) % 2
+    return (date.month() - currentMonth) % 2
       ? styles.OddMonth
       : styles.EvenMonth;
   }
@@ -52,7 +59,7 @@ export default function App() {
   function GetGridViewItem(item) {
     if (item.label === '...') {
       setDates(
-        getDates(moment().add(datesCount - 1, 'days'), datesCount, {
+        getDates(moment(today).add(datesCount - 1, 'days'), datesCount, {
           label: '?',
           date: undefined,
           style: styles.LastItem,
@@ -121,9 +128,9 @@ export default function App() {
         <View style={styles.MainContainer}>
           <DateTimePicker
             testID="dateTimePicker"
-            value={new Date(moment().add(datesCount * 2))}
+            value={new Date(moment(today).add(datesCount * 2))}
             mode={'date'}
-            color={Colors.dateTimePickerColor}
+            color={ColorSet.dateTimePickerColor}
             onChange={(_date) => {
               setDateValue(new Date(_date.nativeEvent.timestamp));
             }}
